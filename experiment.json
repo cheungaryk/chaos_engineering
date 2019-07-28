@@ -1,0 +1,39 @@
+{
+  "title": "Does our service tolerate the loss of its example file?",
+  "description": "Our service reads data from an example file, can it handle the file disappearing?",
+  "tags": [
+    "tutorial",
+    "filesystem"
+  ],
+
+  "steady-state-hypothesis": {
+    "title": "The exchange file must exist",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "service-is-unavailable",
+        "tolerance": [200, 503],
+        "provider": {
+          "type": "http",
+          "url": "http://localhost:8080/"
+        }
+      }
+    ]
+  },
+
+  "method": [
+    {
+      "name": "move-example-file",
+      "type": "action",
+      "provider": {
+        "type": "python",
+        "module": "os",
+        "func": "rename",
+        "arguments": {
+          "src": "./example.dat",
+          "dst": "./example.dat.old"
+        }
+      }
+    }
+  ]
+}
